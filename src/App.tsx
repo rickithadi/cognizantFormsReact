@@ -1,21 +1,19 @@
 import React,{useState} from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik,ErrorMessage, Form, Field } from 'formik';
 import {RegisterFormSchema,User} from './RegisterFormSchema'
 import {userJson} from './user-data'
 import './App.css';
 
 function App() {
-  const [user] = useState(new User(userJson))
-  //const [user, updateUser] = useState(initialStateValue);
 
 //const validated: User = RegisterFormSchema.validateSync(parsed);
+  const initialUser=new User(userJson)
   return (
     <div className="App">
-    {user&& JSON.stringify(user)}
     <h2>User Registration</h2>
       <header className="App-header">
       <Formik
-      initialValues={user}
+      initialValues={initialUser}
       onSubmit={async values => {
         await new Promise(resolve => setTimeout(resolve, 500));
         alert(JSON.stringify(values, null, 2));
@@ -35,7 +33,46 @@ function App() {
           handleReset
         } = props;
         return (
-          <form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit}>
+          {JSON.stringify(values)}
+               <label htmlFor="fullName" style={{ display: "block" }}>
+          Name
+            </label>
+            <input
+              id="fullName"
+              type="text"
+              value={values.fullName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={
+                errors.fullName && touched.fullName
+                  ? "text-input error"
+                  : "text-input"
+              }
+            />
+            {errors.fullName && touched.fullName && (
+              <div className="input-feedback">{errors.fullName}</div>
+            )}
+          
+               <label htmlFor="address" style={{ display: "block" }}>
+          Address
+            </label>
+            <input
+              id="areaName"
+              type="text"
+              value={values.address.areaName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={
+                errors.fullName && touched.fullName
+                  ? "text-input error"
+                  : "text-input"
+              }
+            />
+            {errors.fullName && touched.fullName && (
+              <div className="input-feedback">{errors.fullName}</div>
+            )}
+ 
             <button
               type="button"
               className="outline"
@@ -48,7 +85,7 @@ function App() {
               Submit
             </button>
 
-          </form>
+          </Form>
         );
       }}
     </Formik>

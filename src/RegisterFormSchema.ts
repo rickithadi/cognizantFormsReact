@@ -8,8 +8,7 @@ export const RegisterFormSchema = Yup.object().shape({
         areaName: Yup.string().required(),
         cityName: Yup.string().required(),
         countryName: Yup.string().required(),
-      })
-      .required('Required'),
+      }),
    hobbies: Yup.array()
       .required('Required'),
   });
