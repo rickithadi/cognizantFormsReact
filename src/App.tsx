@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { Formik,ErrorMessage, Form, Field } from 'formik';
+import { Formik,ErrorMessage, Form, Field, FieldArray } from 'formik';
 import {RegisterFormSchema,User} from './RegisterFormSchema'
 import {userJson} from './user-data'
 import './App.css';
@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="App">
     <h2>User Registration</h2>
-      <header className="App-header">
+      <div className="App-header">
       <Formik
       initialValues={initialUser}
       onSubmit={async values => {
@@ -34,7 +34,6 @@ function App() {
         } = props;
         return (
           <Form onSubmit={handleSubmit}>
-          {JSON.stringify(values)}
                <label htmlFor="fullName" style={{ display: "block" }}>
           Name
             </label>
@@ -50,29 +49,53 @@ function App() {
                   : "text-input"
               }
             />
-            {errors.fullName && touched.fullName && (
-              <div className="input-feedback">{errors.fullName}</div>
-            )}
-          
-               <label htmlFor="address" style={{ display: "block" }}>
-          Address
-            </label>
-            <input
-              id="areaName"
-              type="text"
-              value={values.address.areaName}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={
-                errors.fullName && touched.fullName
-                  ? "text-input error"
-                  : "text-input"
-              }
-            />
-            {errors.fullName && touched.fullName && (
-              <div className="input-feedback">{errors.fullName}</div>
-            )}
- 
+                   <ErrorMessage name="fullName" />
+         
+          {JSON.stringify(values.address)}
+
+    <FieldArray name='hobbies'>
+{({ insert, remove, push }) => (
+<div>
+<h2>hobbies
+<button
+                  type="button"
+                  className="secondary"
+                  onClick={() => push({ name: '' })}
+                >
+                  Add Hobby
+                </button>
+ </h2>
+  {values.hobbies.length>0&& values.hobbies.map((hobby,i)=>  (
+  <div>
+    <div  key={i}>
+                        <Field
+                          name={`hobbies.${i}.name`}
+                          type="text"
+                        />
+                        <ErrorMessage
+                          name={`hobbies.${i}.name`}
+                          component="div"
+                          className="field-error"
+                        />
+
+                        <button
+                          type="button"
+                          className="secondary"
+                          onClick={() => remove(i)}
+                        >
+    remove
+                        </button>
+
+    </div>
+   </div>
+    
+    ))}
+</div>
+)}
+
+  
+</FieldArray>
+
             <button
               type="button"
               className="outline"
@@ -90,7 +113,7 @@ function App() {
       }}
     </Formik>
      
-     </header>
+     </div>
     </div>
   );
 }

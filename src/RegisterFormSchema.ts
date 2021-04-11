@@ -9,8 +9,9 @@ export const RegisterFormSchema = Yup.object().shape({
         cityName: Yup.string().required(),
         countryName: Yup.string().required(),
       }),
-   hobbies: Yup.array()
-      .required('Required'),
+   hobbies: Yup.array().of(Yup.object().shape({
+     name:Yup.string().required('hobby cannot be empty')
+   }))
   });
   
 export class User {
